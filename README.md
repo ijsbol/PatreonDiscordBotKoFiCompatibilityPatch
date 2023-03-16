@@ -4,6 +4,10 @@
 |--|--|
 | <img align="center" src="https://i.imgur.com/QhMmR5M.png" height="128" width="128"/> | <img align="center" src="https://img.shields.io/github/license/scrumpyy/PatreonDiscordBotKoFiCompatibilityPatch?style=for-the-badge"/><img align="center" src="https://img.shields.io/github/issues/scrumpyy/PatreonDiscordBotKoFiCompatibilityPatch?style=for-the-badge"/><br><img align="center" src="https://img.shields.io/github/stars/scrumpyy/PatreonDiscordBotKoFiCompatibilityPatch?style=for-the-badge"/> |
 
+<a href="https://ko-fi.com/uwugal" target="_blank">
+  <img src="https://img.shields.io/badge/KoFi-Support_the_project-5d96f0?logo=kofi&style=for-the-badge&labelColor=ffffff&logoColor=5d96f0">
+</a>
+
 Patreons Discord bot will remove Discord roles from users who do not have an active subscription, regardless on if they *ever* had a subscription.
 
 This fairly poor implementation results in numerous issues and makes it impossible to use other subscription services such as KoFi or BuyMeACoffee with the same reward roles as Patreon.

@@ -19,8 +19,9 @@ from typing import (
 
 load_dotenv()
 
-# Will make better later.
-intents = Intents.all()
+intents = Intents.none()
+intents.members = True
+intents.moderation = True
 
 bot = InteractionBot(
     intents=intents,

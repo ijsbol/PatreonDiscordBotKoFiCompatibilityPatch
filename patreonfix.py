@@ -37,7 +37,10 @@ async def wait_and_check(entry: AuditLogEntry) -> None:
     # Wait for all roles to be removed by the Patreon bot.
     await sleep(SLEEP_DURATION)
 
-    targeted_member = entry.guild.get_member(entry.target.id)
+    targeted_member = (
+        entry.guild.get_member(entry.target.id) # Get member obj from cache.
+        or await entry.guild.fetch_member(entry.target.id) # Fetch new member obj if not in cache.
+    )
 
     removed_roles = [role for role in ROLE_UPDATE[entry.target.id]]
 

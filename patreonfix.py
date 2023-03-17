@@ -65,19 +65,18 @@ async def on_audit_log_entry_create_handler(entry: AuditLogEntry) -> None:
     if (
         entry.user.id == PATREON_DISCORD_BOT_ID
         and entry.action == AuditLogAction.member_role_update
+        and len(entry.changes.before.roles) == 1 # Role was removed rather than added.
     ):
-        if len(entry.changes.before.roles) == 1:
-            # Role was removed rather than added.
-            removed_role = entry.changes.before.roles[0]
-            targetted_user = entry.target
+        removed_role = entry.changes.before.roles[0]
+        targetted_user = entry.target
 
-            if ROLE_UPDATE.get(targetted_user.id, None) is None:
-                # The Patreon bot hasn't removed any roles yet.
-                ROLE_UPDATE[targetted_user.id] = [removed_role]
-                return await wait_and_check(entry)
-            
-            # Store addtional roles that the Patreon bot removes.
-            ROLE_UPDATE[targetted_user.id].append(removed_role)
+        if ROLE_UPDATE.get(targetted_user.id, None) is None:
+            # The Patreon bot hasn't removed any roles yet.
+            ROLE_UPDATE[targetted_user.id] = [removed_role]
+            return await wait_and_check(entry)
+
+        # Store addtional roles that the Patreon bot removes.
+        ROLE_UPDATE[targetted_user.id].append(removed_role)
 
 
 bot.run(getenv("DISCORD_BOT_TOKEN"))

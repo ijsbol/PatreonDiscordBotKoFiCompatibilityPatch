@@ -37,7 +37,7 @@ async def wait_and_check(entry: AuditLogEntry) -> None:
     # Wait for all roles to be removed by the Patreon bot.
     await sleep(SLEEP_DURATION)
 
-    targetted_member = entry.guild.get_member(entry.target.id)
+    targeted_member = entry.guild.get_member(entry.target.id)
 
     removed_roles = [role for role in ROLE_UPDATE[entry.target.id]]
 
@@ -47,7 +47,7 @@ async def wait_and_check(entry: AuditLogEntry) -> None:
     
     for role in removed_roles:
         # Add roles back that patreon mistakenly removed.
-        await targetted_member.add_roles(role, reason="Adding role back that Patreon removed.")
+        await targeted_member.add_roles(role, reason="Adding role back that Patreon removed.")
     
     del ROLE_UPDATE[entry.target.id]
 
@@ -65,15 +65,15 @@ async def on_audit_log_entry_create(entry: AuditLogEntry) -> None:
         and len(entry.changes.before.roles) == 1 # Role was removed rather than added.
     ):
         removed_role = entry.changes.before.roles[0]
-        targetted_user = entry.target
+        targeted_user = entry.target
 
-        if ROLE_UPDATE.get(targetted_user.id, None) is None:
+        if ROLE_UPDATE.get(targeted_user.id, None) is None:
             # The Patreon bot hasn't removed any roles yet.
-            ROLE_UPDATE[targetted_user.id] = [removed_role]
+            ROLE_UPDATE[targeted_user.id] = [removed_role]
             return await wait_and_check(entry)
 
         # Store addtional roles that the Patreon bot removes.
-        ROLE_UPDATE[targetted_user.id].append(removed_role)
+        ROLE_UPDATE[targeted_user.id].append(removed_role)
 
 
 client.run(getenv("DISCORD_BOT_TOKEN"))

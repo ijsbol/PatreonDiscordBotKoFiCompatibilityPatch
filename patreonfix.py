@@ -3,7 +3,6 @@ from os import getenv
 from typing import Dict, List, Optional
 
 from dotenv import load_dotenv
-from disnake.ext.commands import InteractionBot
 from disnake import (
     Intents,
     Activity,
@@ -12,6 +11,7 @@ from disnake import (
     AuditLogAction,
     Member,
     Role,
+    Client,
 )
 
 load_dotenv()
@@ -20,7 +20,7 @@ intents = Intents.none()
 intents.members = True
 intents.moderation = True
 
-bot = InteractionBot(
+client = Client(
     intents=intents,
     status=Status.dnd,
     activity=Activity(name=f"Patreons bot make mistakes.", type=4),
@@ -52,13 +52,13 @@ async def wait_and_check(entry: AuditLogEntry) -> None:
     del ROLE_UPDATE[entry.target.id]
 
 
-@bot.event
-async def on_ready() -> None:
+@client.event
+async def on_connect() -> None:
     print("Bot has connected to the Discord gateway")
 
 
-@bot.listen("on_audit_log_entry_create")
-async def on_audit_log_entry_create_handler(entry: AuditLogEntry) -> None:
+@client.listen("on_audit_log_entry_create")
+async def on_audit_log_entry_create(entry: AuditLogEntry) -> None:
     if (
         entry.user.id == PATREON_DISCORD_BOT_ID
         and entry.action == AuditLogAction.member_role_update
@@ -76,4 +76,4 @@ async def on_audit_log_entry_create_handler(entry: AuditLogEntry) -> None:
         ROLE_UPDATE[targetted_user.id].append(removed_role)
 
 
-bot.run(getenv("DISCORD_BOT_TOKEN"))
+client.run(getenv("DISCORD_BOT_TOKEN"))

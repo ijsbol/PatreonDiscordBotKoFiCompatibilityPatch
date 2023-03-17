@@ -1,6 +1,6 @@
 from asyncio import sleep
 from os import getenv
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Final
 
 from dotenv import load_dotenv
 from disnake import (
@@ -28,9 +28,9 @@ client = Client(
 
 ROLE_UPDATE: Dict[int, List[Role]] = {}
 
-PATREON_DISCORD_BOT_ID = int(getenv("PATREON_DISCORD_BOT_ID"))
-PATREON_ROLE_ID = int(getenv("PATREON_ROLE_ID"))
-SLEEP_DURATION = int(getenv("SLEEP_DURATION"))
+PATREON_DISCORD_BOT_ID: Final[int] = int(getenv("PATREON_DISCORD_BOT_ID"))
+PATREON_ROLE_ID: Final[int] = int(getenv("PATREON_ROLE_ID"))
+SLEEP_DURATION: Final[int] = int(getenv("SLEEP_DURATION"))
 
 
 async def wait_and_check(entry: AuditLogEntry) -> None:

@@ -59,7 +59,7 @@ async def on_connect() -> None:
     print("Bot has connected to the Discord gateway")
 
 
-@client.listen("on_audit_log_entry_create")
+@client.event
 async def on_audit_log_entry_create(entry: AuditLogEntry) -> None:
     if (
         entry.user.id == PATREON_DISCORD_BOT_ID

@@ -1,6 +1,6 @@
 from asyncio import sleep
 from os import getenv
-from typing import Dict, List, Optional, Final
+from typing import Dict, List, Final
 
 from dotenv import load_dotenv
 from disnake import (
@@ -9,7 +9,6 @@ from disnake import (
     Status,
     AuditLogEntry,
     AuditLogAction,
-    Member,
     Role,
     Client,
 )

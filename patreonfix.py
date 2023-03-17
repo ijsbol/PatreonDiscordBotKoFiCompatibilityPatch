@@ -1,6 +1,8 @@
 from asyncio import sleep
-from dotenv import load_dotenv
 from os import getenv
+from typing import Dict, List, Optional
+
+from dotenv import load_dotenv
 from disnake.ext.commands import InteractionBot
 from disnake import (
     Intents,
@@ -10,11 +12,6 @@ from disnake import (
     AuditLogAction,
     Member,
     Role,
-)
-from typing import (
-    Dict,
-    List,
-    Optional,
 )
 
 load_dotenv()

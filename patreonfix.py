@@ -22,7 +22,7 @@ intents.moderation = True
 client = Client(
     intents=intents,
     status=Status.dnd,
-    activity=Activity(name=f"Patreons bot make mistakes.", type=4),
+    activity=Activity(name=f"Patreons bot make mistakes.", type=3),
 )
 
 ROLE_UPDATE: Dict[int, List[Role]] = {}

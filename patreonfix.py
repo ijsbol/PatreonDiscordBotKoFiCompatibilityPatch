@@ -15,11 +15,12 @@ from disnake import (
 
 load_dotenv()
 
-intents = Intents.none()
-intents.members = True
-intents.moderation = True
+intents: Intents = Intents(
+    members=True,
+    moderation=True,
+)
 
-client = Client(
+client: Client = Client(
     intents=intents,
     status=Status.dnd,
     activity=Activity(name=f"Patreons bot make mistakes.", type=3),

@@ -16,13 +16,13 @@ from disnake import (
 
 load_dotenv()
 
-intents: Intents = Intents(
+INTENTS: Final[Intents] = Intents(
     members=True,
     moderation=True,
 )
 
 client: Client = Client(
-    intents=intents,
+    intents=INTENTS,
     status=Status.dnd,
     activity=Activity(name=f"Patreons bot make mistakes.", type=3),
 )

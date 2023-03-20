@@ -11,6 +11,7 @@ from disnake import (
     AuditLogAction,
     Role,
     Client,
+    Member,
 )
 
 load_dotenv()
@@ -37,21 +38,26 @@ async def wait_and_check(entry: AuditLogEntry) -> None:
     # Wait for all roles to be removed by the Patreon bot.
     await sleep(SLEEP_DURATION)
 
-    targeted_member = (
+    targeted_member: Member = (
         entry.guild.get_member(entry.target.id) # Get member obj from cache.
         or await entry.guild.fetch_member(entry.target.id) # Fetch new member obj if not in cache.
     )
 
-    removed_roles = [role for role in ROLE_UPDATE[entry.target.id]]
+    removed_roles: List[Role] = [role for role in ROLE_UPDATE[entry.target.id]]
+    removed_role_ids: List[int] = [role.id for role in removed_roles]
 
-    if PATREON_ROLE_ID in [role.id for role in removed_roles]:
+    if PATREON_ROLE_ID in removed_role_ids:
         # Patreon is removing roles from someone it should be removing roles from.
         return
     
     for role in removed_roles:
         # Add roles back that patreon mistakenly removed.
-        await targeted_member.add_roles(role, reason="Adding role back that Patreon removed.")
+        await targeted_member.add_roles(
+            role,
+            reason="Adding role back that Patreon removed.",
+        )
     
+    # Remove member removed role information from cache.
     del ROLE_UPDATE[entry.target.id]
 
 
@@ -67,8 +73,8 @@ async def on_audit_log_entry_create(entry: AuditLogEntry) -> None:
         and entry.action == AuditLogAction.member_role_update
         and len(entry.changes.before.roles) == 1 # Role was removed rather than added.
     ):
-        removed_role = entry.changes.before.roles[0]
-        targeted_user = entry.target
+        removed_role: Role = entry.changes.before.roles[0]
+        targeted_user: User = entry.target
 
         if ROLE_UPDATE.get(targeted_user.id, None) is None:
             # The Patreon bot hasn't removed any roles yet.
@@ -79,4 +85,5 @@ async def on_audit_log_entry_create(entry: AuditLogEntry) -> None:
         ROLE_UPDATE[targeted_user.id].append(removed_role)
 
 
+# Run the bot
 client.run(getenv("DISCORD_BOT_TOKEN"))

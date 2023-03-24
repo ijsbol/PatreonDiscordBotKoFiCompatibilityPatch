@@ -18,16 +18,13 @@ load_dotenv()
 
 
 ROLE_UPDATE: Dict[int, List[Role]] = {}
-
 PATREON_DISCORD_BOT_ID: Final[int] = int(getenv("PATREON_DISCORD_BOT_ID"))
 PATREON_ROLE_ID: Final[int] = int(getenv("PATREON_ROLE_ID"))
 SLEEP_DURATION: Final[int] = int(getenv("SLEEP_DURATION"))
-
 INTENTS: Final[Intents] = Intents(
     members=True,
     moderation=True,
 )
-
 
 client: Client = Client(
     intents=INTENTS,
@@ -62,11 +59,9 @@ async def wait_and_check(entry: AuditLogEntry) -> None:
     # Remove member removed role information from cache.
     del ROLE_UPDATE[entry.target.id]
 
-
 @client.event
 async def on_connect() -> None:
     print("Bot has connected to the Discord gateway")
-
 
 @client.event
 async def on_audit_log_entry_create(entry: AuditLogEntry) -> None:

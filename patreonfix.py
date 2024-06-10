@@ -17,6 +17,11 @@ from disnake import (
 load_dotenv()
 
 
+if getenv("PROXY_URL"):
+    from disnake.http import Route
+    Route.BASE = getenv("PROXY_URL") 
+
+
 ROLE_UPDATE: Dict[int, List[Role]] = {}
 PATREON_DISCORD_BOT_ID: Final[int] = int(getenv("PATREON_DISCORD_BOT_ID"))
 PATREON_ROLE_ID: Final[int] = int(getenv("PATREON_ROLE_ID"))
